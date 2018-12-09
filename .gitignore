@@ -14,4 +14,4 @@ out
 build
 bin
 
-*/target/*
+target/*
