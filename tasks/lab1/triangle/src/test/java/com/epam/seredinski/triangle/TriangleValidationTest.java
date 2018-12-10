@@ -1,6 +1,7 @@
 package com.epam.seredinski.triangle;
 
 import com.epam.seredinski.triangle.entity.Triangle;
+import com.epam.seredinski.triangle.exception.NotATriangleException;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -17,6 +18,7 @@ public class TriangleValidationTest {
                 {13, 4.9, 5.3}
         };
     }
+
     @DataProvider
     public static Object[][] triangleZeroSides() {
         return new Object[][]{
@@ -34,32 +36,34 @@ public class TriangleValidationTest {
                 {-3.5, 4.8, 5.125512}
         };
     }
+
     @DataProvider
     public static Object[][] correctSides() {
         return new Object[][]{
-                {3.6,4.1,4.9},
-                {3.0,3.0,5.2},
-                {4.123,8.97,6.42}
+                {3.6, 4.1, 4.9},
+                {3.0, 3.0, 5.2},
+                {4.123, 8.97, 6.42}
         };
     }
 
-    @Test(dataProvider = "sidesNotValid")
-    public void isFalseWhenSidesIsNotValid(double a, double b, double c) {
+    @Test(dataProvider = "sidesNotValid", expectedExceptions = NotATriangleException.class)
+    public void isExceptionWhenSidesIsNotValid(double a, double b, double c) {
         Triangle triangle = new Triangle(a, b, c);
-        Assert.assertFalse(isTriangle(triangle));
+        isTriangle(triangle);
     }
 
-    @Test(dataProvider = "triangleZeroSides")
-    public void isFalseWhenZeroSides(double a, double b, double c) {
+    @Test(dataProvider = "triangleZeroSides", expectedExceptions = NotATriangleException.class)
+    public void isExceptionWhenZeroSides(double a, double b, double c) {
         Triangle triangle = new Triangle(a, b, c);
-        Assert.assertFalse(isTriangle(triangle));
+        isTriangle(triangle);
     }
 
-    @Test(dataProvider = "sidesIsNotPositive")
-    public void isFalseWhenSidesIsNotPositive(double a, double b, double c) {
+    @Test(dataProvider = "sidesIsNotPositive", expectedExceptions = NotATriangleException.class)
+    public void isExceptionWhenSidesIsNotPositive(double a, double b, double c) {
         Triangle triangle = new Triangle(a, b, c);
-        Assert.assertFalse(isTriangle(triangle));
+        isTriangle(triangle);
     }
+
     @Test(dataProvider = "correctSides")
     public void isTrueWhenCorrectSides(double a, double b, double c) {
         Triangle triangle = new Triangle(a, b, c);
