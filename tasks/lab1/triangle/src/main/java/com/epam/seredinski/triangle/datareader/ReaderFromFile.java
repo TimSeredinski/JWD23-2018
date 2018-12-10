@@ -1,10 +1,14 @@
 package com.epam.seredinski.triangle.datareader;
 
+import com.epam.seredinski.triangle.exception.ReadFromFileException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +16,9 @@ import static com.epam.seredinski.triangle.validation.InputValidation.isValidInp
 
 public class ReaderFromFile {
 
-    public static List<Double[]> readFromFile(String path) {
+    private static final Logger logger = LogManager.getLogger(ReaderFromFile.class);
+
+    public static List<Double[]> readFromFile(String path) throws ReadFromFileException {
         List<Double[]> arrayOfCoordinates = new ArrayList<>();
         try {
             List<String> lines = Files.lines(Paths.get(path)).collect(Collectors.toList());
@@ -29,7 +35,8 @@ public class ReaderFromFile {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Exception in ReaderFromFile.readFromFile()", e);
+            throw new ReadFromFileException("Exception in ReaderFromFile.readFromFile()", e);
         }
         return arrayOfCoordinates;
     }

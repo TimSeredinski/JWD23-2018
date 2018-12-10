@@ -1,9 +1,15 @@
 package com.epam.seredinski.triangle;
 
+import com.epam.seredinski.triangle.exception.InvalidLineException;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.epam.seredinski.triangle.datareader.ReaderFromFile.readFromFile;
 import static com.epam.seredinski.triangle.validation.InputValidation.isValidInputString;
 
 public class InputValidationTest {
@@ -31,9 +37,14 @@ public class InputValidationTest {
         Assert.assertTrue(isValidInputString(str));
     }
 
-    @Test(dataProvider = "coordinateOfVerticesIsNotValid")
-    public void isFalseWhenCoordinatesIsNotValid(String[] str) {
-        Assert.assertFalse(isValidInputString(str));
+    @Test(dataProvider = "coordinateOfVerticesIsNotValid", expectedExceptions = InvalidLineException.class)
+    public void isExceptionWhenCoordinatesIsNotValid(String[] str) throws InvalidLineException {
+        isValidInputString(str);
+    }
+
+    @Test(expectedExceptions = InvalidLineException.class)
+    public void isExceptionWhenFileHasIncorrectLine() {
+        List<Double[]> actualArray = readFromFile("src/main/resources/fileWithOneIncorrectLine.txt");
     }
 
 }
